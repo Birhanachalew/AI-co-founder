@@ -1,0 +1,33 @@
+import requests
+import os
+
+# Set up the URL and API key for the Gemini API
+gemini_url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+# api_key = "ya29.c.c0ASRK0GZ0dsTVGCoyEo2wscdjAagxNhhm8Jr2nI3Ud5qKaC5B45cnmw1DZezqBGTvLc2xaBWWTJadGDWu2eUbu3Z9PEDqAPSbGKlzCmuvwqCNivUQuOyT_x2JlR2aPR7ALOcseleicgtHx894-IOAB-cnKZKgK1vZcK0JyoeWUnZP818UfaHRKgLX7aT3dHPEu-SZyd61EfbjPv6NEc07GbIHtG_UIiW6EngcZzaTlrQi-KfkoxkUX3kdL0MEXJl4Hq4NKBldTluAPU-kFNjADt9jgOYpYeXchoKRaia6R7zlzotNFDKHzYv-swgYpU3WS5ce2KplKkRsq8Knag6s4PbYRJs1lSO0pPY3j1oDs0QuemiuNAmzEAkOhwH387C2ttzZ96VkvBskyI0I6g3n7c8gk4kxoRrxz07jh47z4ojRzpm3On1RSFvzzlaUsUf7uO3ytFmy3M4Yt-IBVVjFB48hUp9R416hUw68oc3kt48vinq719lJyFV1lOuF3Xz8hbU5UMbo_c1B0bl-dYUz6rhuBBW_hubhv9wcQBb7JoWzWrbe2RS-411B81vUur31Z2dfd6t1ZYQ_Y-UFnXfqbcxz2YB1t9f9lJqfwhvIgcfhUy_RvoelcJFtm0Fiu2k-_o_tn3OhU14uu9xu7vy9ivfjsc1Zs9uwFXdUm9UBqgfv-t4lgmQYOy6ga-FIUmbVdltbxji-QYoht8gfwh4d-l60FpJq1yOo489VkYYi1XrMnJJkU1h21-p91I9XljO5WixbIdrdlsxphSvZ15qqfs30RWgIj3ziUh2YpfcwX07-SgFi_F57lhFaWBdVxcZeFbUQuc1f39Vddiet2mWFO_R0hRa0WoRt3VO1QX25OwJjkB3r_53mnv8be7SuMYcpZrxe5Iq5y7zpVu2q3Ijk8utRxvXvkJU5psUYlQd4QfXgYoi3k2sgUFBnd4SBb6iOs096neyQjzioaUhROziOp6p5wXqvm498vxb9Vpwhpq6wUM1nis3SyJ1"
+
+# Function to generate ideas
+def generate_ideas(prompt):
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {api_key}',
+    }
+    data = {
+        "prompt": {
+            "text": prompt
+        },
+        "temperature": 0.7,  # Adjust creativity level
+        "max_output_tokens": 150  # Adjust length of response
+    }
+
+    response = requests.post(gemini_url, json=data, headers=headers)
+    if response.status_code == 200:
+        return response.json()['content']
+    else:
+        print(f"Error: {response.status_code}, {response.text}")
+        return None
+
+if __name__ == "__main__":
+    user_prompt = input("Enter the prompt for idea generation: ")
+    ideas = generate_ideas(user_prompt)
+    if ideas:
+        print("Generated ideas:\n", ideas)
